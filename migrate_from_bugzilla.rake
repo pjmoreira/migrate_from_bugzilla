@@ -184,8 +184,53 @@ namespace :redmine do
         "P1" => blocking_priority
       }
 
-      TRACKER_BUG = Tracker.find_by_position(1)
-      TRACKER_FEATURE = Tracker.find_by_position(2)
+      # danielfernandez: reorganize trackers
+      Tracker.delete_all
+
+      problem_tracker = Tracker.new
+      problem_tracker.name = 'Problem'
+      problem_tracker.is_in_chlog = true
+      problem_tracker.position = 1
+      problem_tracker.is_in_roadmap = false
+      problem_tracker.fields_bits = 0
+      problem_tracker.save
+
+      feature_tracker = Tracker.new
+      feature_tracker.name = 'Feature'
+      feature_tracker.is_in_chlog = true
+      feature_tracker.position = 2
+      feature_tracker.is_in_roadmap = true
+      feature_tracker.fields_bits = 0
+      feature_tracker.save
+
+      question_tracker = Tracker.new
+      question_tracker.name = 'Question'
+      question_tracker.is_in_chlog = false
+      question_tracker.position = 3
+      question_tracker.is_in_roadmap = false
+      question_tracker.fields_bits = 0
+      question_tracker.save
+
+      task_tracker = Tracker.new
+      task_tracker.name = 'Task'
+      task_tracker.is_in_chlog = true
+      task_tracker.position = 4
+      task_tracker.is_in_roadmap = false
+      task_tracker.fields_bits = 0
+      task_tracker.save
+
+      DEFAULT_TRACKER = problem_tracker
+
+      TRACKER_MAPPING = {
+        "critical" => problem_tracker,
+        "blocker" => problem_tracker,
+        "major" => problem_tracker,
+        "normal" => problem_tracker,
+        "minor" => problem_tracker,
+        "trivial" => problem_tracker,
+        "enhancement" => feature_tracker
+      }
+
 
       reporter_role = Role.find_by_position(5)
       developer_role = Role.find_by_position(4)
@@ -499,7 +544,8 @@ namespace :redmine do
             :updated_on => bug.delta_ts
           ) { |t| t.id = bug.bug_id }
 
-          issue.tracker = TRACKER_BUG
+          # danielfernandez: Modified in order to allow issues to be migrated into other trackers than the "bugs" one
+          issue.tracker = TRACKER_MAPPING[bug.bug_severity] || DEFAULT_TRACKER
           # issue.category_id = @category_map[bug.component_id]
 
           issue.category_id =  @category_map[bug.component_id] unless bug.component_id.blank?
