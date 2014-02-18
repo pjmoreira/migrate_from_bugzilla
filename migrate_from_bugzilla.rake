@@ -45,16 +45,81 @@ namespace :redmine do
 
     module BugzillaMigrate
 
-      # danielfernandez: adapted statuses
-      new_status = IssueStatus.find_by_position(1)
-      accepted_status = IssueStatus.find_by_position(2)
-      inprogress_status = IssueStatus.find_by_position(3)
-      developed_status = IssueStatus.find_by_position(4)
-      suspended_status = IssueStatus.find_by_position(5)
-      completed_status = IssueStatus.find_by_position(6)
-      declined_status = IssueStatus.find_by_position(7)
-      abandoned_status = IssueStatus.find_by_position(8)
-      invalid_status = IssueStatus.find_by_position(9)
+      # danielfernandez: reorganize statuses
+      IssueStatus.delete_all
+
+      new_status = IssueStatus.new
+      new_status.id = 1
+      new_status.name = 'New'
+      new_status.is_closed = false
+      new_status.is_default = true
+      new_status.position = 1
+      new_status.save
+
+      accepted_status = IssueStatus.new
+      accepted_status.id = 2
+      accepted_status.name = 'Accepted'
+      accepted_status.is_closed = false
+      accepted_status.is_default = false
+      accepted_status.position = 2
+      accepted_status.save
+
+      inprogress_status = IssueStatus.new
+      inprogress_status.id = 3
+      inprogress_status.name = 'In Progress'
+      inprogress_status.is_closed = false
+      inprogress_status.is_default = false
+      inprogress_status.position = 3
+      inprogress_status.save
+
+      developed_status = IssueStatus.new
+      developed_status.id = 4
+      developed_status.name = 'Developed'
+      developed_status.is_closed = false
+      developed_status.is_default = false
+      developed_status.position = 4
+      developed_status.save
+
+      suspended_status = IssueStatus.new
+      suspended_status.id = 5
+      suspended_status.name = 'Suspended'
+      suspended_status.is_closed = false
+      suspended_status.is_default = false
+      suspended_status.position = 5
+      suspended_status.save
+
+      completed_status = IssueStatus.new
+      completed_status.id = 6
+      completed_status.name = 'Completed'
+      completed_status.is_closed = true
+      completed_status.is_default = false
+      completed_status.position = 6
+      completed_status.save
+
+      declined_status = IssueStatus.new
+      declined_status.id = 7
+      declined_status.name = 'Declined'
+      declined_status.is_closed = true
+      declined_status.is_default = false
+      declined_status.position = 7
+      declined_status.save
+
+      abandoned_status = IssueStatus.new
+      abandoned_status.id = 8
+      abandoned_status.name = 'Abandoned'
+      abandoned_status.is_closed = true
+      abandoned_status.is_default = false
+      abandoned_status.position = 8
+      abandoned_status.save
+
+      invalid_status = IssueStatus.new
+      invalid_status.id = 9
+      invalid_status.name = 'Invalid'
+      invalid_status.is_closed = true
+      invalid_status.is_default = false
+      invalid_status.position = 9
+      invalid_status.save
+
       DEFAULT_STATUS = IssueStatus.default
 
 
@@ -77,18 +142,44 @@ namespace :redmine do
         "RESOLVED"    => completed_status,
         "CLOSED"      => completed_status
       }
-      # danielfernandez: this block not really needed, all closed status are already marked so
-      # # actually close resolved issues
-      # resolved_status.is_closed = true
-      # resolved_status.save
 
-      priorities = IssuePriority.all(:order => 'id')
+      # danielfernandez: reorganize priorities
+      IssuePriority.delete_all
+
+      blocking_priority = IssuePriority.new
+      blocking_priority.name = 'Blocking'
+      blocking_priority.position = 4
+      blocking_priority.is_default = false
+      blocking_priority.position_name = 'highest'
+      blocking_priority.save
+
+      major_priority = IssuePriority.new
+      major_priority.name = 'Major'
+      major_priority.position = 3
+      major_priority.is_default = false
+      major_priority.position_name = 'high2'
+      major_priority.save
+
+      normal_priority = IssuePriority.new
+      normal_priority.name = 'Normal'
+      normal_priority.position = 2
+      normal_priority.is_default = true
+      normal_priority.position_name = 'default'
+      normal_priority.save
+
+      minor_priority = IssuePriority.new
+      normal_priority.name = 'Minor'
+      normal_priority.position = 1
+      normal_priority.is_default = false
+      normal_priority.position_name = 'lowest'
+      minor_priority.save
+
       PRIORITY_MAPPING = {
-        "P5" => priorities[1], # low
-        "P4" => priorities[2], # normal
-        "P3" => priorities[3], # high
-        "P2" => priorities[4], # urgent
-        "P1" => priorities[5]  # immediate
+        "P5" => minor_priority,
+        "P4" => normal_priority,
+        "P3" => normal_priority,
+        "P2" => major_priority,
+        "P1" => blocking_priority
       }
       DEFAULT_PRIORITY = PRIORITY_MAPPING["P2"]
 
