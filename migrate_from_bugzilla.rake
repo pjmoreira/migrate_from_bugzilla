@@ -168,10 +168,10 @@ namespace :redmine do
       normal_priority.save
 
       minor_priority = IssuePriority.new
-      normal_priority.name = 'Minor'
-      normal_priority.position = 1
-      normal_priority.is_default = false
-      normal_priority.position_name = 'lowest'
+      minor_priority.name = 'Minor'
+      minor_priority.position = 1
+      minor_priority.is_default = false
+      minor_priority.position_name = 'lowest'
       minor_priority.save
 
       PRIORITY_MAPPING = {
@@ -181,7 +181,7 @@ namespace :redmine do
         "P2" => major_priority,
         "P1" => blocking_priority
       }
-      DEFAULT_PRIORITY = PRIORITY_MAPPING["P2"]
+      DEFAULT_PRIORITY = normal_priority
 
       TRACKER_BUG = Tracker.find_by_position(1)
       TRACKER_FEATURE = Tracker.find_by_position(2)
