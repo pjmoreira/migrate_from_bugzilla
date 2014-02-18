@@ -173,6 +173,8 @@ namespace :redmine do
       minor_priority.is_default = false
       minor_priority.position_name = 'lowest'
       minor_priority.save
+      
+      DEFAULT_PRIORITY = IssuePriority.default
 
       PRIORITY_MAPPING = {
         "P5" => minor_priority,
@@ -181,7 +183,6 @@ namespace :redmine do
         "P2" => major_priority,
         "P1" => blocking_priority
       }
-      DEFAULT_PRIORITY = normal_priority
 
       TRACKER_BUG = Tracker.find_by_position(1)
       TRACKER_FEATURE = Tracker.find_by_position(2)
@@ -239,13 +240,13 @@ namespace :redmine do
         def lastname
           s = read_attribute(:realname)
           return 'unknown' if(s.blank?)
-          return s.split(/[ ,]+/)[-1]
+          return s.split(/[ ,]+/, 2)[-1]
         end
 
         def firstname
           s = read_attribute(:realname)
           return 'unknown' if(s.blank?)
-          return s.split(/[ ,]+/).first
+          return s.split(/[ ,]+/, 2).first
         end
       end
 
