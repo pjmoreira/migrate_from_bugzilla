@@ -44,24 +44,43 @@ namespace :redmine do
     register_for_assigned_pk([User, Project, Issue, IssueCategory, Attachment, Version])
 
     module BugzillaMigrate
-      DEFAULT_STATUS = IssueStatus.default
-      CLOSED_STATUS = IssueStatus.find :first, :conditions => { :is_closed => true }
-      assigned_status = IssueStatus.find_by_position(2)
-      resolved_status = IssueStatus.find_by_position(3)
-      feedback_status = IssueStatus.find_by_position(4)
 
-      STATUS_MAPPING = {
-        "UNCONFIRMED" => DEFAULT_STATUS,
-        "NEW" => DEFAULT_STATUS,
-        "VERIFIED" => DEFAULT_STATUS,
-        "ASSIGNED" => assigned_status,
-        "REOPENED" => assigned_status,
-        "RESOLVED" => resolved_status,
-        "CLOSED" => CLOSED_STATUS
+      # danielfernandez: adapted statuses
+      new_status = IssueStatus.find_by_position(1)
+      accepted_status = IssueStatus.find_by_position(2)
+      inprogress_status = IssueStatus.find_by_position(3)
+      developed_status = IssueStatus.find_by_position(4)
+      suspended_status = IssueStatus.find_by_position(5)
+      completed_status = IssueStatus.find_by_position(6)
+      declined_status = IssueStatus.find_by_position(7)
+      abandoned_status = IssueStatus.find_by_position(8)
+      invalid_status = IssueStatus.find_by_position(9)
+      DEFAULT_STATUS = IssueStatus.default
+
+
+      # danielfernandez: adapted status mapping, first map by resolution should be attempted, then by status
+      RESOLUTION_MAPPING = {
+        "DUPLICATE"  => invalid_status,
+        "FIXED"      => completed_status,
+        "INVALID"    => invalid_status,
+        "LATER"      => suspended_status,
+        "REMIND"     => suspended_status,
+        "WONTFIX"    => declined_status,
+        "WORKSFORME" => invalid_status
       }
-      # actually close resolved issues
-      resolved_status.is_closed = true
-      resolved_status.save
+      STATUS_MAPPING = {
+        "UNCONFIRMED" => new_status,
+        "NEW"         => new_status,
+        "VERIFIED"    => accepted_status,
+        "ASSIGNED"    => inprogress_status,
+        "REOPENED"    => accepted_status,
+        "RESOLVED"    => completed_status,
+        "CLOSED"      => completed_status
+      }
+      # danielfernandez: this block not really needed, all closed status are already marked so
+      # # actually close resolved issues
+      # resolved_status.is_closed = true
+      # resolved_status.save
 
       priorities = IssuePriority.all(:order => 'id')
       PRIORITY_MAPPING = {
@@ -381,7 +400,8 @@ namespace :redmine do
             :description => description || bug.short_desc,
             :author_id => map_user(bug.reporter),
             :priority => PRIORITY_MAPPING[bug.priority] || DEFAULT_PRIORITY,
-            :status => STATUS_MAPPING[bug.bug_status] || DEFAULT_STATUS,
+            # danielfernandez: Modified to perform first a by-resolution mapping
+            :status => RESOLUTION_MAPPING[bug.resolution] || STATUS_MAPPING[bug.bug_status] || DEFAULT_STATUS,
             :start_date => bug.creation_ts,
             :created_on => bug.creation_ts,
             :updated_on => bug.delta_ts
