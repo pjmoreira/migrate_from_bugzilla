@@ -45,80 +45,103 @@ namespace :redmine do
 
     module BugzillaMigrate
 
+
+      # danielfernandez - 20140520 - Use status already present in Redmine
+      new_status = IssueStatus.find_by_name('New')
+      accepted_status = IssueStatus.find_by_name('Accepted')
+      inprogress_status = IssueStatus.find_by_name('In Progress')
+      developed_status = IssueStatus.find_by_name('Developed')
+      suspended_status = IssueStatus.find_by_name('Suspended')
+      completed_status = IssueStatus.find_by_name('Completed')
+      declined_status = IssueStatus.find_by_name('Declined')
+      abandoned_status = IssueStatus.find_by_name('Abandoned')
+      invalid_status = IssueStatus.find_by_name('Invalid')
+      reopened_status = IssueStatus.find_by_name('New (reopened)')
+
+
       # danielfernandez: reorganize statuses
-      IssueStatus.delete_all
+      # IssueStatus.delete_all
 
-      new_status = IssueStatus.new
-      new_status.id = 1
-      new_status.name = 'New'
-      new_status.is_closed = false
-      new_status.is_default = true
-      new_status.position = 1
-      new_status.save
+      # new_status = IssueStatus.new
+      # new_status.id = 1
+      # new_status.name = 'New'
+      # new_status.is_closed = false
+      # new_status.is_default = true
+      # new_status.position = 1
+      # new_status.save
 
-      accepted_status = IssueStatus.new
-      accepted_status.id = 2
-      accepted_status.name = 'Accepted'
-      accepted_status.is_closed = false
-      accepted_status.is_default = false
-      accepted_status.position = 2
-      accepted_status.save
+      # accepted_status = IssueStatus.new
+      # accepted_status.id = 2
+      # accepted_status.name = 'Accepted'
+      # accepted_status.is_closed = false
+      # accepted_status.is_default = false
+      # accepted_status.position = 2
+      # accepted_status.save
 
-      inprogress_status = IssueStatus.new
-      inprogress_status.id = 3
-      inprogress_status.name = 'In Progress'
-      inprogress_status.is_closed = false
-      inprogress_status.is_default = false
-      inprogress_status.position = 3
-      inprogress_status.save
+      # inprogress_status = IssueStatus.new
+      # inprogress_status.id = 3
+      # inprogress_status.name = 'In Progress'
+      # inprogress_status.is_closed = false
+      # inprogress_status.is_default = false
+      # inprogress_status.position = 3
+      # inprogress_status.save
 
-      developed_status = IssueStatus.new
-      developed_status.id = 4
-      developed_status.name = 'Developed'
-      developed_status.is_closed = false
-      developed_status.is_default = false
-      developed_status.position = 4
-      developed_status.save
+      # developed_status = IssueStatus.new
+      # developed_status.id = 4
+      # developed_status.name = 'Developed'
+      # developed_status.is_closed = false
+      # developed_status.is_default = false
+      # developed_status.position = 4
+      # developed_status.save
 
-      suspended_status = IssueStatus.new
-      suspended_status.id = 5
-      suspended_status.name = 'Suspended'
-      suspended_status.is_closed = false
-      suspended_status.is_default = false
-      suspended_status.position = 5
-      suspended_status.save
+      # suspended_status = IssueStatus.new
+      # suspended_status.id = 5
+      # suspended_status.name = 'Suspended'
+      # suspended_status.is_closed = false
+      # suspended_status.is_default = false
+      # suspended_status.position = 5
+      # suspended_status.save
 
-      completed_status = IssueStatus.new
-      completed_status.id = 6
-      completed_status.name = 'Completed'
-      completed_status.is_closed = true
-      completed_status.is_default = false
-      completed_status.position = 6
-      completed_status.save
+      # completed_status = IssueStatus.new
+      # completed_status.id = 6
+      # completed_status.name = 'Completed'
+      # completed_status.is_closed = true
+      # completed_status.is_default = false
+      # completed_status.position = 6
+      # completed_status.save
 
-      declined_status = IssueStatus.new
-      declined_status.id = 7
-      declined_status.name = 'Declined'
-      declined_status.is_closed = true
-      declined_status.is_default = false
-      declined_status.position = 7
-      declined_status.save
+      # declined_status = IssueStatus.new
+      # declined_status.id = 7
+      # declined_status.name = 'Declined'
+      # declined_status.is_closed = true
+      # declined_status.is_default = false
+      # declined_status.position = 7
+      # declined_status.save
 
-      abandoned_status = IssueStatus.new
-      abandoned_status.id = 8
-      abandoned_status.name = 'Abandoned'
-      abandoned_status.is_closed = true
-      abandoned_status.is_default = false
-      abandoned_status.position = 8
-      abandoned_status.save
+      # abandoned_status = IssueStatus.new
+      # abandoned_status.id = 8
+      # abandoned_status.name = 'Abandoned'
+      # abandoned_status.is_closed = true
+      # abandoned_status.is_default = false
+      # abandoned_status.position = 8
+      # abandoned_status.save
 
-      invalid_status = IssueStatus.new
-      invalid_status.id = 9
-      invalid_status.name = 'Invalid'
-      invalid_status.is_closed = true
-      invalid_status.is_default = false
-      invalid_status.position = 9
-      invalid_status.save
+      # invalid_status = IssueStatus.new
+      # invalid_status.id = 9
+      # invalid_status.name = 'Invalid'
+      # invalid_status.is_closed = true
+      # invalid_status.is_default = false
+      # invalid_status.position = 9
+      # invalid_status.save
+
+      # danielfernandez: 20140520 - Added 'New (reopened)' status
+      # reopened_status = IssueStatus.new
+      # reopened_status.id = 10
+      # reopened_status.name = 'New (reopened)'
+      # reopened_status.is_closed = false
+      # reopened_status.is_default = false
+      # reopened_status.position = 10
+      # reopened_status.save
 
       DEFAULT_STATUS = IssueStatus.default
 
@@ -138,41 +161,51 @@ namespace :redmine do
         "NEW"         => new_status,
         "VERIFIED"    => accepted_status,
         "ASSIGNED"    => inprogress_status,
-        "REOPENED"    => accepted_status,
+        "REOPENED"    => reopened_status,
         "RESOLVED"    => completed_status,
         "CLOSED"      => completed_status
       }
 
+
+
+      # danielfernandez - 20140520 - Use priorities already present in Redmine
+      blocking_priority = IssuePriority.find_by_name('Blocking')
+      major_priority = IssuePriority.find_by_name('Major')
+      normal_priority = IssuePriority.find_by_name('Normal')
+      minor_priority = IssuePriority.find_by_name('Minor')
+
+
+
       # danielfernandez: reorganize priorities
-      IssuePriority.delete_all
+      # IssuePriority.delete_all
 
-      blocking_priority = IssuePriority.new
-      blocking_priority.name = 'Blocking'
-      blocking_priority.position = 4
-      blocking_priority.is_default = false
-      blocking_priority.position_name = 'highest'
-      blocking_priority.save
+      # blocking_priority = IssuePriority.new
+      # blocking_priority.name = 'Blocking'
+      # blocking_priority.position = 4
+      # blocking_priority.is_default = false
+      # blocking_priority.position_name = 'highest'
+      # blocking_priority.save
 
-      major_priority = IssuePriority.new
-      major_priority.name = 'Major'
-      major_priority.position = 3
-      major_priority.is_default = false
-      major_priority.position_name = 'high2'
-      major_priority.save
+      # major_priority = IssuePriority.new
+      # major_priority.name = 'Major'
+      # major_priority.position = 3
+      # major_priority.is_default = false
+      # major_priority.position_name = 'high2'
+      # major_priority.save
 
-      normal_priority = IssuePriority.new
-      normal_priority.name = 'Normal'
-      normal_priority.position = 2
-      normal_priority.is_default = true
-      normal_priority.position_name = 'default'
-      normal_priority.save
+      # normal_priority = IssuePriority.new
+      # normal_priority.name = 'Normal'
+      # normal_priority.position = 2
+      # normal_priority.is_default = true
+      # normal_priority.position_name = 'default'
+      # normal_priority.save
 
-      minor_priority = IssuePriority.new
-      minor_priority.name = 'Minor'
-      minor_priority.position = 1
-      minor_priority.is_default = false
-      minor_priority.position_name = 'lowest'
-      minor_priority.save
+      # minor_priority = IssuePriority.new
+      # minor_priority.name = 'Minor'
+      # minor_priority.position = 1
+      # minor_priority.is_default = false
+      # minor_priority.position_name = 'lowest'
+      # minor_priority.save
       
       DEFAULT_PRIORITY = IssuePriority.default
 
@@ -184,40 +217,50 @@ namespace :redmine do
         "P1" => blocking_priority
       }
 
+
+
+      # danielfernandez - 20140520 - Use trackers already present in Redmine
+      problem_tracker = Tracker.find.by_name('Problem')
+      feature_tracker = Tracker.find_by_name('Feature')
+      question_tracker = Tracker.find_by_name('Question')
+      task_tracker = Tracker.find_by_name('Task')
+
+
+
       # danielfernandez: reorganize trackers
-      Tracker.delete_all
+      # Tracker.delete_all
 
-      problem_tracker = Tracker.new
-      problem_tracker.name = 'Problem'
-      problem_tracker.is_in_chlog = true
-      problem_tracker.position = 1
-      problem_tracker.is_in_roadmap = false
-      problem_tracker.fields_bits = 0
-      problem_tracker.save
+      # problem_tracker = Tracker.new
+      # problem_tracker.name = 'Problem'
+      # problem_tracker.is_in_chlog = true
+      # problem_tracker.position = 1
+      # problem_tracker.is_in_roadmap = false
+      # problem_tracker.fields_bits = 0
+      # problem_tracker.save
 
-      feature_tracker = Tracker.new
-      feature_tracker.name = 'Feature'
-      feature_tracker.is_in_chlog = true
-      feature_tracker.position = 2
-      feature_tracker.is_in_roadmap = true
-      feature_tracker.fields_bits = 0
-      feature_tracker.save
+      # feature_tracker = Tracker.new
+      # feature_tracker.name = 'Feature'
+      # feature_tracker.is_in_chlog = true
+      # feature_tracker.position = 2
+      # feature_tracker.is_in_roadmap = true
+      # feature_tracker.fields_bits = 0
+      # feature_tracker.save
 
-      question_tracker = Tracker.new
-      question_tracker.name = 'Question'
-      question_tracker.is_in_chlog = false
-      question_tracker.position = 3
-      question_tracker.is_in_roadmap = false
-      question_tracker.fields_bits = 0
-      question_tracker.save
+      # question_tracker = Tracker.new
+      # question_tracker.name = 'Question'
+      # question_tracker.is_in_chlog = false
+      # question_tracker.position = 3
+      # question_tracker.is_in_roadmap = false
+      # question_tracker.fields_bits = 0
+      # question_tracker.save
 
-      task_tracker = Tracker.new
-      task_tracker.name = 'Task'
-      task_tracker.is_in_chlog = true
-      task_tracker.position = 4
-      task_tracker.is_in_roadmap = false
-      task_tracker.fields_bits = 0
-      task_tracker.save
+      # task_tracker = Tracker.new
+      # task_tracker.name = 'Task'
+      # task_tracker.is_in_chlog = true
+      # task_tracker.position = 4
+      # task_tracker.is_in_roadmap = false
+      # task_tracker.fields_bits = 0
+      # task_tracker.save
 
       DEFAULT_TRACKER = problem_tracker
 
@@ -232,9 +275,10 @@ namespace :redmine do
       }
 
 
-      reporter_role = Role.find_by_position(5)
-      developer_role = Role.find_by_position(4)
-      manager_role = Role.find_by_position(3)
+      # danielfernandez - 20140520 - Retrieve roles from DB by name instead of position
+      reporter_role = Role.find_by_name('User')
+      developer_role = Role.find_by_name('Member')
+      manager_role = Role.find_by_name('Master')
       DEFAULT_ROLE = reporter_role
       MANAGER_ROLE = manager_role
 
@@ -427,21 +471,26 @@ namespace :redmine do
           profile_email = profile.email
           profile_email.strip!
           existing_redmine_user = User.find_by_mail(profile_email)
+
           if existing_redmine_user
+
             @user_map[profile.userid] = existing_redmine_user.id
+
           else
-            # create the new user with its own fresh pk
-            # and make an entry in the mapping
+
+            # danielfernandez - 20140520 - Create user with LDAP auth
+            puts "Creating non-existing user: #{profile.login}"
             user = User.new
             user.login = profile.login
-            user.password = "bugzilla"
+            user.password = "inactive"
             user.firstname = profile.firstname
             user.lastname = profile.lastname
+            user.auth_source_id = 1
             user.mail = profile.email
             user.mail.strip!
             user.status = User::STATUS_LOCKED if !profile.disabledtext.empty?
             user.admin = true if profile.groups.include?(BugzillaGroup.find_by_name("admin"))
-              unless user.save then
+            unless user.save then
               puts "FAILURE saving user"
               puts "user: #{user.inspect}"
               puts "bugzilla profile: #{profile.inspect}"
@@ -449,6 +498,28 @@ namespace :redmine do
               puts "validation errors: #{validation_errors}"
             end
             @user_map[profile.userid] = user.id
+
+            # danielfernandez - 20140520 - Commented out in favour of new method
+            # create the new user with its own fresh pk
+            # and make an entry in the mapping
+            # user = User.new
+            # user.login = profile.login
+            # user.password = "bugzilla"
+            # user.firstname = profile.firstname
+            # user.lastname = profile.lastname
+            # user.mail = profile.email
+            # user.mail.strip!
+            # user.status = User::STATUS_LOCKED if !profile.disabledtext.empty?
+            # user.admin = true if profile.groups.include?(BugzillaGroup.find_by_name("admin"))
+            # unless user.save then
+            #   puts "FAILURE saving user"
+            #   puts "user: #{user.inspect}"
+            #   puts "bugzilla profile: #{profile.inspect}"
+            #   validation_errors = user.errors.collect {|e| e.to_s }.join(", ")
+            #   puts "validation errors: #{validation_errors}"
+            # end
+            # @user_map[profile.userid] = user.id
+
           end
           print '.'
         end
