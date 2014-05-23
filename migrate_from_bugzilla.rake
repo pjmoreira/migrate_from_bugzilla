@@ -47,16 +47,16 @@ namespace :redmine do
 
 
       # danielfernandez - 20140520 - Use status already present in Redmine
-      new_status = IssueStatus.find_by_name('New')
-      accepted_status = IssueStatus.find_by_name('Accepted')
-      inprogress_status = IssueStatus.find_by_name('In Progress')
-      developed_status = IssueStatus.find_by_name('Developed')
-      suspended_status = IssueStatus.find_by_name('Suspended')
-      completed_status = IssueStatus.find_by_name('Completed')
-      declined_status = IssueStatus.find_by_name('Declined')
-      abandoned_status = IssueStatus.find_by_name('Abandoned')
-      invalid_status = IssueStatus.find_by_name('Invalid')
-      reopened_status = IssueStatus.find_by_name('New (reopened)')
+      new_status = IssueStatus.find_by_name!('New')
+      accepted_status = IssueStatus.find_by_name!('Accepted')
+      inprogress_status = IssueStatus.find_by_name!('In Progress')
+      developed_status = IssueStatus.find_by_name!('Developed')
+      suspended_status = IssueStatus.find_by_name!('Suspended')
+      completed_status = IssueStatus.find_by_name!('Completed')
+      declined_status = IssueStatus.find_by_name!('Declined')
+      abandoned_status = IssueStatus.find_by_name!('Abandoned')
+      invalid_status = IssueStatus.find_by_name!('Invalid')
+      reopened_status = IssueStatus.find_by_name!('New (reopened)')
 
 
       # danielfernandez: reorganize statuses
@@ -169,10 +169,10 @@ namespace :redmine do
 
 
       # danielfernandez - 20140520 - Use priorities already present in Redmine
-      blocking_priority = IssuePriority.find_by_name('Blocking')
-      major_priority = IssuePriority.find_by_name('Major')
-      normal_priority = IssuePriority.find_by_name('Normal')
-      minor_priority = IssuePriority.find_by_name('Minor')
+      blocking_priority = IssuePriority.find_by_name!('Blocking')
+      major_priority = IssuePriority.find_by_name!('Major')
+      normal_priority = IssuePriority.find_by_name!('Normal')
+      minor_priority = IssuePriority.find_by_name!('Minor')
 
 
 
@@ -223,10 +223,10 @@ namespace :redmine do
       # The visual names are 'Problem', 'Feature', 'Question' and 'Task', but
       # Redmine keeps in database their original names, which were
       # 'Bug', 'Feature', 'Support' and 'Task'
-      problem_tracker = Tracker.find.by_name('Bug')
-      feature_tracker = Tracker.find_by_name('Feature')
-      question_tracker = Tracker.find_by_name('Support')
-      task_tracker = Tracker.find_by_name('Task')
+      problem_tracker = Tracker.find_by_name!('Bug')
+      feature_tracker = Tracker.find_by_name!('Feature')
+      question_tracker = Tracker.find_by_name!('Support')
+      task_tracker = Tracker.find_by_name!('Task')
 
 
 
@@ -279,9 +279,9 @@ namespace :redmine do
 
 
       # danielfernandez - 20140520 - Retrieve roles from DB by name instead of position
-      reporter_role = Role.find_by_name('User')
-      developer_role = Role.find_by_name('Member')
-      manager_role = Role.find_by_name('Master')
+      reporter_role = Role.find_by_name!('User')
+      developer_role = Role.find_by_name!('Member')
+      manager_role = Role.find_by_name!('Master')
       DEFAULT_ROLE = reporter_role
       MANAGER_ROLE = manager_role
 
