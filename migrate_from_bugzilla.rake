@@ -169,10 +169,10 @@ namespace :redmine do
 
 
       # danielfernandez - 20140520 - Use priorities already present in Redmine
-      blocking_priority = IssuePriority.find_by_name!('Blocking')
-      major_priority = IssuePriority.find_by_name!('Major')
+      blocking_priority = IssuePriority.find_by_name!('Urgent')  # Display name 'Blocking'
+      major_priority = IssuePriority.find_by_name!('High')       # Display name 'Major'
       normal_priority = IssuePriority.find_by_name!('Normal')
-      minor_priority = IssuePriority.find_by_name!('Minor')
+      minor_priority = IssuePriority.find_by_name!('Low')        # Display name 'Minor'
 
 
 
