@@ -279,9 +279,9 @@ namespace :redmine do
 
 
       # danielfernandez - 20140520 - Retrieve roles from DB by name instead of position
-      reporter_role = Role.find_by_name!('User')
-      developer_role = Role.find_by_name!('Member')
-      manager_role = Role.find_by_name!('Master')
+      reporter_role = Role.find_by_name!('Reporter')      # Display name 'User'
+      developer_role = Role.find_by_name!('Developer')    # Display name 'Member'
+      manager_role = Role.find_by_name!('Manager')        # Display name 'Master'
       DEFAULT_ROLE = reporter_role
       MANAGER_ROLE = manager_role
 
