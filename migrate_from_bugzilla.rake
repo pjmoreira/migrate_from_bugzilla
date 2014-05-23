@@ -220,9 +220,12 @@ namespace :redmine do
 
 
       # danielfernandez - 20140520 - Use trackers already present in Redmine
-      problem_tracker = Tracker.find.by_name('Problem')
+      # The visual names are 'Problem', 'Feature', 'Question' and 'Task', but
+      # Redmine keeps in database their original names, which were
+      # 'Bug', 'Feature', 'Support' and 'Task'
+      problem_tracker = Tracker.find.by_name('Bug')
       feature_tracker = Tracker.find_by_name('Feature')
-      question_tracker = Tracker.find_by_name('Question')
+      question_tracker = Tracker.find_by_name('Support')
       task_tracker = Tracker.find_by_name('Task')
 
 
