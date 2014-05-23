@@ -53,7 +53,7 @@ namespace :redmine do
       developed_status = IssueStatus.find_by_name!('Developed')
       suspended_status = IssueStatus.find_by_name!('Suspended')
       completed_status = IssueStatus.find_by_name!('Completed')
-      declined_status = IssueStatus.find_by_name!('Declined')
+      declined_status = IssueStatus.find_by_name!('Rejected') # Visual name: 'Declined'
       abandoned_status = IssueStatus.find_by_name!('Abandoned')
       invalid_status = IssueStatus.find_by_name!('Invalid')
       reopened_status = IssueStatus.find_by_name!('New (reopened)')
