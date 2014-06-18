@@ -209,7 +209,9 @@ namespace :redmine do
 
           description = bug.descriptions.first.text.to_s
 
-          issue = Issue.find(bug.bug_id)
+          issue = Issue.find_by_id(bug.bug_id)
+          next if issue.nil?
+          
           issue.description = CGI.escapeHTML(description || bug.short_desc)
 
           issue.save!
