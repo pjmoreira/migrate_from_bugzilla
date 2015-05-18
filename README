@@ -20,5 +20,5 @@ The task is based on the work of Arjen Roodselaar, Lindix bv.
 * If you are working on a new installation of redmine make shure you ran
   "rake redmine:load_default_data".
 * Run the script using "rake redmine:migrate_from_bugzilla" and enter the connection settings of your bugzilla database.
-
+* To run other auxiliary script use "RAILS_ENV=production rake redmine:move_field_values"
 
